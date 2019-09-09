@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { Grid, Paper } from '@material-ui/core';
-import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import { Redirect } from 'react-router-dom';
+import { useMutation } from '@apollo/react-hooks';
 
 // Components
 import RegistroForm from './components/registroForm';
@@ -11,28 +12,35 @@ import Logo from '../../assets/FoodGo.png';
 
 // GraphQL
 const REGISTRO = gql`
-  mutation addUsuario($nombre: String!, $email: String!, $password: String!, $genero: Gender) {
-    addUsuario(data: {nombre: $nombre, email: $email, password: $password, genero: $genero}) {
+  mutation addUsuario($nombre: String!, $email: String!,$password: String!,$genero: Gender) {
+    addUsuario(data: { nombre: $nombre, email: $email,password: $password, genero: $genero}) {
       token
     }
   }
 `;
 
-const Registro = () => {
+const Registro = ({ handleLoggin }) => {
 
-  const [registroForm, setregistroForm] = useState({
-    nombre: '',
-    email: '',
-    password: '',
-    genero: '',
-  })
+  const [addUsuario, { data, error, loading }] = useMutation(REGISTRO);
 
-  const handleSubmit = (values, mutation) => {
-    console.log(values)
-    setregistroForm({ ...values });
-    mutation();
+  useEffect(() => {
+    handleLoggin(false);
+    localStorage.removeItem("jwt");
+  }, [])
+
+  const handleSubmit = (values) => {
+    addUsuario({ variables: values });
   }
 
+  useEffect(() => {
+    if (data) {
+      if (data.addUsuario) {
+        localStorage.setItem('jwt', data.addUsuario.token);
+        handleLoggin();
+        return <Redirect to={'/'} />
+      }
+    }
+  }, [data])
 
   return <div>
     <Grid container justify={'center'} alignContent={'center'} alignItems={'center'} style={{
@@ -41,27 +49,15 @@ const Registro = () => {
     }}>
       <Grid item>
         <Paper elevation={3} style={{ width: '100%' }}>
-          <div style={{ padding: 20 }}>
-            <img alt="" src={Logo} width="140" height="50" />
-          </div>
-          <Mutation mutation={REGISTRO} variables={registroForm}>
-            {
-              (addUsuario, { data, error, loading }) => {
-                if (data) {
-                  return <Redirect to="/" />
-                }
-                if (loading) return <p>haciendo login..</p>
-
-                return (
-                  <div>
-                    <RegistroForm error={error} handleSubmit={(values) => handleSubmit(values, addUsuario)} />
-                  </div>
-                );
-
-              }
-            }
-
-          </Mutation>
+          {loading && <div style={{ padding: 20 }}> <CircularProgress /></div>}
+          {!loading && <div>
+            <div style={{ padding: 20 }}>
+              <img alt="" src={Logo} width="140" height="50" />
+            </div>
+            <div>
+              <RegistroForm error={error} handleSubmit={(values) => handleSubmit(values)} />
+            </div>
+          </div>}
         </Paper>
       </Grid>
     </Grid>

@@ -1,12 +1,11 @@
-import React from 'react';
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import React, { useEffect } from 'react';
 import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
+import client from './apollo';
 
-// Pages
-import Inicio from './pages/inicio';
-import Registro from './pages/registro';
-import Login from './pages/login';
+import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
+import Routers from './config/router';
 
 
 let theme = createMuiTheme({
@@ -25,17 +24,50 @@ let theme = createMuiTheme({
 
 theme = responsiveFontSizes(theme);
 
+const LOGED_USER_QUERY = gql`
+query {
+  loginState @client {
+    userLogged
+  }
+}
+`;
 
 function App() {
+
+  const handleLoggin = (usuarioLogeado = true) => {
+    client.mutate({
+      mutation: gql`
+        mutation setUserLogged($logged: Boolean) {
+          setUserLogged(logged: $logged) @client{
+              data
+          }
+        }
+      `,
+      variables: { logged: usuarioLogeado }
+    })
+  }
+
+  useEffect(() => {
+    const token = localStorage.getItem('jwt');
+    if (token) handleLoggin();
+  }, [])
+
   return (
     <div>
       <ThemeProvider theme={theme}>
-        <Router>
-          <Route exact path="/" component={Inicio} />
-          <Route exact path="/inicio" component={Inicio} />
-          <Route exact path="/registro" component={Registro} />
-          <Route exact path="/login" component={Login} />
-        </Router>
+        <Query query={LOGED_USER_QUERY}>
+          {
+            ({ data }) => {
+              console.log("TCL: App -> data", data)
+              return (
+                <Routers
+                  handleLoggin={handleLoggin}
+                  usserLogged={data.loginState.userLogged}
+                />
+              );
+            }
+          }
+        </Query>
       </ThemeProvider>
     </div>
   );

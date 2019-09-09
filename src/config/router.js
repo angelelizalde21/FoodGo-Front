@@ -1,0 +1,64 @@
+import React from 'react';
+import { BrowserRouter as Router, Route, Redirect, Switch } from "react-router-dom";
+
+// Pages
+import Inicio from '../pages/inicio';
+import Registro from '../pages/registro';
+import Login from '../pages/login';
+import Platillos from '../pages/platillos';
+import Restaurantes from '../pages/restaurantes';
+import DetalleRestaurante from '../pages/detalle-restaurante/index';
+
+const PublicRoute = ({ component: Component, ...rest }) => (
+    <Route
+        {...rest}
+        render={(props) => <Component {...props} />}
+    />
+);
+
+const PrivateRoute = ({ component: Component, ...rest }) => (
+    <Route {...rest} render={(props) => (
+        rest.usserLogged === true
+            ? <Component {...props} />
+            : <Redirect to='/' />
+    )} />
+);
+
+const Routers = ({ usserLogged, handleLoggin }) => {
+
+    return <Router>
+        <Switch>
+            <PublicRoute
+                exact
+                path='/'
+                component={() => <Inicio usserLogged={usserLogged} handleLoggin={handleLoggin} />}
+            />
+            <PublicRoute
+                path='/registro'
+                component={() => <Registro handleLoggin={handleLoggin} />}
+            />
+            <PublicRoute
+                path="/login"
+                component={() => <Login handleLoggin={handleLoggin} />}
+            />
+            <PrivateRoute
+                path="/platillos"
+                usserLogged={usserLogged}
+                component={() => <Platillos usserLogged={usserLogged} handleLoggin={handleLoggin} />}
+            />
+            <PrivateRoute
+                path="/restaurantes"
+                usserLogged={usserLogged}
+                component={() => <Restaurantes usserLogged={usserLogged} handleLoggin={handleLoggin} />}
+            />
+            <PrivateRoute
+                path="/restaurante"
+                usserLogged={usserLogged}
+                component={() => <DetalleRestaurante usserLogged={usserLogged} handleLoggin={handleLoggin} />}
+            />
+        </Switch>
+    </Router>
+}
+
+
+export default Routers;

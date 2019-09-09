@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -8,20 +8,23 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Icon from '@material-ui/core/Icon';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import MenuUsuario from './menuUsuario';
 
-const Header = () => {
-  const [Usuario, setUsuario] = useState(null);
+const Header = ({ usserLogged, handleLoggin }) => {
 
-  useEffect(() => {
-    const user = localStorage.getItem('jwt');
-    if (user) {
-      setUsuario(user);
-    }
-  }, [])
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
   const CollisionLink = (link) => React.forwardRef((props, ref) => (
     <Link innerRef={ref} to={link} {...props} />
   ));
+
+  function handleClick(event) {
+    setAnchorEl(event.currentTarget);
+  }
+
+  function handleClose() {
+    setAnchorEl(null);
+  }
 
   return <div>
     <AppBar position="static">
@@ -33,7 +36,7 @@ const Header = () => {
           Go
       </Typography>
         {
-          Usuario && <div style={{ marginLeft: 30 }}>
+          usserLogged && <div style={{ marginLeft: 30 }}>
             <Grid container justify={'center'} alignContent={'center'} alignItems={'center'} spacing={2}>
               <Grid item>
                 <Button component={CollisionLink('platillos')}>Platillos</Button>
@@ -45,7 +48,7 @@ const Header = () => {
           </div>
         }
         <div style={{ flexGrow: 1 }}></div>
-        {Usuario ? <div>
+        {usserLogged ? <div>
           <IconButton
             edge="end"
             aria-haspopup="true"
@@ -57,10 +60,11 @@ const Header = () => {
             edge="end"
             aria-haspopup="true"
             color="primary"
+            onClick={handleClick}
           >
             <AccountCircle />
           </IconButton>
-
+          <MenuUsuario open={Boolean(anchorEl)} anchorEl={anchorEl} handleClose={handleClose} handleLoggin={handleLoggin} />
         </div> :
           <div>
             <Button component={CollisionLink('registro')} color="primary" style={{ marginRight: 20 }}>

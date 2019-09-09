@@ -8,11 +8,11 @@ import Footer from '../menu/footer';
 import Banner from './components/banner';
 import Cards from './components/cards';
 
-const Inicio = () => {
+const Inicio = ({ usserLogged, handleLoggin }) => {
 
   return <div>
-    <Header />
-    <Banner />
+    <Header usserLogged={usserLogged} handleLoggin={handleLoggin} />
+    <Banner usserLogged={usserLogged} />
     <Cards />
     <Footer />
   </div>

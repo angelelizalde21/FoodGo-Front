@@ -3,11 +3,24 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { createUploadLink } from 'apollo-upload-client';
 import { onError } from 'apollo-link-error';
 import { ApolloLink } from 'apollo-link';
+import { withClientState } from 'apollo-link-state';
+
+
+import defaults from './defaults';
+import resolvers from './resolvers';
 
 const HTTP_HOST = 'http://ubereats-backend.jgu3pdgbri.us-west-2.elasticbeanstalk.com/';
 
 const httpLink = new createUploadLink({
   uri: HTTP_HOST,
+});
+
+const cache = new InMemoryCache();
+
+const stateLink = withClientState({
+  cache,
+  defaults,
+  resolvers,
 });
 
 const AuthLink = (operation, next) => {
@@ -23,8 +36,6 @@ const AuthLink = (operation, next) => {
   }
   return next(operation);
 };
-
-const cache = new InMemoryCache();
 
 const client = new ApolloClient({
   link: ApolloLink.from([
@@ -42,6 +53,7 @@ const client = new ApolloClient({
         }
       }
     }),
+    stateLink,
     AuthLink,
     httpLink,
   ]),

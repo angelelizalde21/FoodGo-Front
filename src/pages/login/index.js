@@ -22,7 +22,7 @@ const LOGIN = gql`
 `;
 
 
-const Login = ({ history }) => {
+const Login = ({ history, handleLoggin }) => {
 
   const [doLogin, { data, error, loading }] = useMutation(LOGIN);
 
@@ -30,13 +30,11 @@ const Login = ({ history }) => {
     doLogin({ variables: values });
   }
 
-  if (error) console.log(error);
-
-
   useEffect(() => {
     if (data) {
       if (data.doLogin) {
         localStorage.setItem('jwt', data.doLogin.token);
+        handleLoggin();
         history.push('/');
       }
     }
