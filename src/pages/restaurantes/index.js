@@ -9,6 +9,7 @@ import Header from '../menu/header';
 
 // Componentes
 import Cuadricula from './components/cuadricula';
+import Cargando from '../../config/cargando';
 
 const REST = gql`
 { getRestaurante {
@@ -29,7 +30,7 @@ const REST = gql`
 `;
 
 const Restaurantes = ({ usserLogged, handleLoggin }) => {
-    const { data } = useQuery(REST);
+    const { data, loading } = useQuery(REST);
     const [Datos, setDatos] = React.useState([]);
 
     useEffect(() => {
@@ -44,7 +45,7 @@ const Restaurantes = ({ usserLogged, handleLoggin }) => {
         <Header usserLogged={usserLogged} handleLoggin={handleLoggin} />
         <Scrollbars style={{ width: '100%', height: 'calc(100vh - 64px)' }}>
             <Divider style={{ marginTop: 10 }} />
-            <Cuadricula Data={Datos} />
+            {loading ? <Cargando /> : <Cuadricula Data={Datos} />}
         </Scrollbars>
     </div>
 }

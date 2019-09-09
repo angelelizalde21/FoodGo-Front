@@ -1,8 +1,5 @@
 import React from 'react';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+import { TextField, MenuItem } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
@@ -28,43 +25,47 @@ const CATEGO = gql`
 `;
 
 const Categorias = ({ values, handleChange }) => {
-    const classes = useStyles();
+  const classes = useStyles();
 
-    const { data } = useQuery(CATEGO);
+  const { data } = useQuery(CATEGO);
 
-    return <FormControl variant="filled" className={classes.formControl}>
-        <InputLabel htmlFor="filled-age-simple">Categoria</InputLabel>
-        <Select
-            value={values.categoria}
-            onChange={handleChange}
-            inputProps={{
-                name: 'categoria',
-                id: 'filled-age-simple',
-            }}
-        >
-            <MenuItem value={''}>
-                <em>None</em>
-            </MenuItem>
-            {data && data.getCategoria.map((item) => <MenuItem key={item}
-                value={item}>
-                {String(item.nombre).toUpperCase()}
-            </MenuItem>)}
-        </Select>
-    </FormControl>
+  return <TextField
+    select
+    label="Categoria"
+    className={classes.formControl}
+    value={values.categoria}
+    onChange={handleChange('categoria')}
+    SelectProps={{
+      MenuProps: {
+        className: classes.menu,
+      },
+    }}
+    margin="normal"
+    variant="filled"
+  >
+    <MenuItem value={''}>
+      <em>None</em>
+    </MenuItem>
+    {data && data.getCategoria.map((item) => <MenuItem key={item}
+      value={item}>
+      {String(item.nombre).toUpperCase()}
+    </MenuItem>)}
+  </TextField>
 }
 
 const useStyles = makeStyles(theme => ({
-    root: {
-        display: 'flex',
-        flexWrap: 'wrap',
-    },
-    formControl: {
-        margin: theme.spacing(1),
-        minWidth: 150,
-    },
-    selectEmpty: {
-        marginTop: theme.spacing(2),
-    },
+  root: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  formControl: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    width: '100%'
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
 }));
 
 export default Categorias;

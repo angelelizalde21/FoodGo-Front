@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
+import { Divider } from '@material-ui/core';
 
 
 // Pages 
@@ -21,6 +22,7 @@ const DetalleRestaurante = ({ usserLogged, handleLoggin }) => {
         <Header usserLogged={usserLogged} handleLoggin={handleLoggin} />
         <Scrollbars style={{ width: '100%', height: 'calc(100vh - 64px)' }}>
             {datos && <Detalle data={datos} />}
+            <Divider style={{ marginTop: 10 }} />
             {datos && <Cuadricula Data={datos.platillos} />}
         </Scrollbars>
     </div>
