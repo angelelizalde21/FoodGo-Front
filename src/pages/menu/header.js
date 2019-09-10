@@ -8,11 +8,15 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Icon from '@material-ui/core/Icon';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+
+// Componentes
 import MenuUsuario from './menuUsuario';
+import Carrito from '../carrito';
 
 const Header = ({ usserLogged, handleLoggin }) => {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [openCarrito, setOpenCarrito] = React.useState(false);
 
   const CollisionLink = (link) => React.forwardRef((props, ref) => (
     <Link innerRef={ref} to={link} {...props} />
@@ -42,7 +46,7 @@ const Header = ({ usserLogged, handleLoggin }) => {
                 <Button component={CollisionLink('platillos')}>Platillos</Button>
               </Grid>
               <Grid item>
-                <Button component={CollisionLink('restaurantes')}>Restaurante</Button>
+                <Button component={CollisionLink('restaurantes')}>Restaurantes</Button>
               </Grid>
             </Grid>
           </div>
@@ -53,6 +57,7 @@ const Header = ({ usserLogged, handleLoggin }) => {
             edge="end"
             aria-haspopup="true"
             color="primary"
+            onClick={() => setOpenCarrito(true)}
           >
             <Icon>shopping_cart</Icon>
           </IconButton>
@@ -79,6 +84,7 @@ const Header = ({ usserLogged, handleLoggin }) => {
       </Toolbar>
 
     </AppBar>
+    <Carrito open={openCarrito} handleClose={() => setOpenCarrito(false)} />
   </div>
 }
 

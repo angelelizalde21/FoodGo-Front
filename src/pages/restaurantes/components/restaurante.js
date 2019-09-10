@@ -11,13 +11,13 @@ const Restaurante = ({ tile, history }) => {
         return history.push('/restaurante');
     }
 
-    return <GridListTile style={{ maxHeight: 200 }}>
-        <img src={tile.avatar} alt={tile.nombre} />
+    return <GridListTile style={{ maxHeight: 200, maxWidth: 500, margin: 10 }}>
+        <img src={tile.avatar} alt={tile.nombre} width={500} height={200} />
         <GridListTileBar
             title={tile.nombre}
             subtitle={<span>{tile.direccion} / {tile.tiempoEspera}</span>}
             actionIcon={
-                <Button onClick={hanldePlatillosClick} color={'primary'}
+                <Button onClick={hanldePlatillosClick} color={'secondary'}
                     className={classes.button}>Ver platillos</Button>
             }
         />
@@ -25,9 +25,6 @@ const Restaurante = ({ tile, history }) => {
 }
 
 const useStyles = makeStyles(theme => ({
-    icon: {
-        color: 'rgba(255, 255, 255, 0.54)',
-    },
     button: {
         marginRight: 20
     }

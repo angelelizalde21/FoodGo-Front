@@ -44,7 +44,7 @@ const Categorias = ({ values, handleChange }) => {
     variant="filled"
   >
     <MenuItem value={''}>
-      <em>None</em>
+      <em>NONE</em>
     </MenuItem>
     {data && data.getCategoria.map((item) => <MenuItem key={item}
       value={item}>

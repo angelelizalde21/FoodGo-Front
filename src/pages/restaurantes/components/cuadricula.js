@@ -13,7 +13,7 @@ const Cuadricula = ({ Data }) => {
             <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }}>
                 <ListSubheader component="div">Restaurantes</ListSubheader>
             </GridListTile>
-            {Data && Data.map((tile) => <Restaurante tile={tile} key={tile} />)}
+            {Data && Data.map((tile) => <Restaurante tile={tile} key={tile._id} />)}
         </GridList>
     </div>
 }
@@ -25,7 +25,6 @@ const useStyles = makeStyles(theme => ({
         justifyContent: 'space-around',
         overflow: 'hidden',
         backgroundColor: theme.palette.background.paper,
-        margin: 20
     },
     gridList: {
         width: '100%',

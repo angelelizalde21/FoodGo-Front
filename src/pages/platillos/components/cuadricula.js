@@ -12,7 +12,7 @@ const Cuadricula = ({ Data }) => {
             <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }}>
                 <ListSubheader component="div">Platillos</ListSubheader>
             </GridListTile>
-            {Data && Data.map((tile) => <Platillo tile={tile} key={tile} />)}
+            {Data && Data.map((tile) => <Platillo tile={tile} key={tile._id} />)}
         </GridList>
     </div>
 }
