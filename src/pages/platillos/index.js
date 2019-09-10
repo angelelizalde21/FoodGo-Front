@@ -43,36 +43,40 @@ const Platillos = ({ usserLogged, handleLoggin }) => {
         setDatos(data.getPlatillo);
       }
     }
-  }, [data])
+  }, [data]);
 
-  const handleChange = (name) => (event) => {
+
+  const handlePlatilloBuscar = (event) => {
     setValues(oldValues => ({
       ...oldValues,
-      [name]: event.target.value,
+      platillo: event.target.value,
     }));
-    // Cuando es categoria
-    if (name === 'categoria') {
-      if (event.target.value) {
-        setDatos(event.target.value.platillos);
-      } else {
-        if (data) {
-          if (data.getPlatillo) {
-            setDatos(data.getPlatillo);
-          }
+
+    if (event.target.value) {
+      let newData = values.categoria ? [...values.categoria.platillos] : [...data.getPlatillo];
+      newData = newData.filter((x) => String(x.nombre).toUpperCase().indexOf(String(event.target.value).toUpperCase()) >= 0);
+      setDatos(newData);
+    } else {
+      if (data) {
+        if (data.getPlatillo) {
+          setDatos(values.categoria ? [...values.categoria.platillos] : [...data.getPlatillo]);
         }
       }
     }
-    // Cuando es platillo
-    else {
-      if (event.target.value) {
-        let newData = [...data.getPlatillo];
-        newData = newData.filter((x) => String(x.nombre).toUpperCase().indexOf(String(event.target.value).toUpperCase()) >= 0);
-        setDatos(newData);
-      } else {
-        if (data) {
-          if (data.getPlatillo) {
-            setDatos(data.getPlatillo);
-          }
+  }
+
+  const handleCategoriaChange = (event) => {
+    setValues({
+      platillo: '',
+      categoria: event.target.value,
+    });
+
+    if (event.target.value) {
+      setDatos(event.target.value.platillos);
+    } else {
+      if (data) {
+        if (data.getPlatillo) {
+          setDatos(data.getPlatillo);
         }
       }
     }
@@ -81,7 +85,7 @@ const Platillos = ({ usserLogged, handleLoggin }) => {
   return <div>
     <Header usserLogged={usserLogged} handleLoggin={handleLoggin} />
     <Scrollbars style={{ width: '100%', height: 'calc(100vh - 64px)' }}>
-      <Filtros handleChange={handleChange} values={values} />
+      <Filtros handleCategoriaChange={handleCategoriaChange} handlePlatilloBuscar={handlePlatilloBuscar} values={values} />
       <Divider style={{ marginTop: 10 }} />
       {loading ? <Cargando /> : <Cuadricula Data={Datos} />}
     </Scrollbars>

@@ -7,8 +7,7 @@ const Restaurante = ({ tile, history }) => {
     const classes = useStyles();
 
     const hanldePlatillosClick = () => {
-        localStorage.setItem('restaurante', JSON.stringify(tile));
-        return history.push('/restaurante');
+        return history.push('/restaurante', { data: tile });
     }
 
     return <GridListTile style={{ maxHeight: 200, maxWidth: 500, margin: 10 }}>
@@ -29,4 +28,5 @@ const useStyles = makeStyles(theme => ({
         marginRight: 20
     }
 }));
+
 export default withRouter(Restaurante);

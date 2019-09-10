@@ -47,6 +47,19 @@ function App() {
     })
   }
 
+  const handleUserLogginData = (Datos = true) => {
+    client.mutate({
+      mutation: gql`
+        mutation userInLogin($datos: Any) {
+          userInLogin(datos: $datos) @client{
+              data
+          }
+        }
+      `,
+      variables: { datos: Datos }
+    })
+  }
+
   useEffect(() => {
     const token = localStorage.getItem('jwt');
     if (token) handleLoggin();
@@ -63,6 +76,7 @@ function App() {
                 <Routers
                   handleLoggin={handleLoggin}
                   usserLogged={data.loginState.userLogged}
+                  handleUserLogginData={handleUserLogginData}
                 />
               );
             }

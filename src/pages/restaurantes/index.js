@@ -49,6 +49,18 @@ const Restaurantes = ({ usserLogged, handleLoggin }) => {
             ...oldValues,
             [name]: event.target.value,
         }));
+
+        if (event.target.value) {
+            let newData = [...data.getRestaurante];
+            newData = newData.filter((x) => String(x.nombre).toUpperCase().indexOf(String(event.target.value).toUpperCase()) >= 0);
+            setDatos(newData);
+        } else {
+            if (data) {
+                if (data.getRestaurante) {
+                    setDatos(data.getRestaurante);
+                }
+            }
+        }
     }
 
     return <div>

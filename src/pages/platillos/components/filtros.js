@@ -5,13 +5,13 @@ import { makeStyles } from '@material-ui/core/styles';
 // Componentes
 import Categorias from './categorias';
 
-const Filtros = ({ handleChange, values }) => {
+const Filtros = ({ handleCategoriaChange, handlePlatilloBuscar, values }) => {
   const classes = useStyles();
 
   return <div>
     <Grid container spacing={3}>
       <Grid item xs={2}>
-        <Categorias handleChange={handleChange} values={values} />
+        <Categorias handleChange={handleCategoriaChange} values={values} />
       </Grid>
       <Grid item xs={5}>
         <TextField
@@ -20,7 +20,7 @@ const Filtros = ({ handleChange, values }) => {
           className={classes.textField}
           margin="normal"
           variant="filled"
-          onChange={handleChange('platillo')}
+          onChange={handlePlatilloBuscar}
         />
       </Grid>
     </Grid>

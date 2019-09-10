@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { Divider } from '@material-ui/core';
+import { withRouter } from 'react-router-dom';
 
 
 // Pages 
@@ -10,12 +11,11 @@ import Header from '../menu/header';
 import Cuadricula from '../platillos/components/cuadricula';
 import Detalle from './components/detalle';
 
-const DetalleRestaurante = ({ usserLogged, handleLoggin }) => {
+const DetalleRestaurante = ({ usserLogged, handleLoggin, location }) => {
     const [datos, setDatos] = useState(null);
 
     useEffect(() => {
-        const data = JSON.parse(localStorage.getItem('restaurante'))
-        setDatos(data);
+        setDatos(location.state.data);
     }, []);
 
     return <div>
@@ -28,4 +28,4 @@ const DetalleRestaurante = ({ usserLogged, handleLoggin }) => {
     </div>
 }
 
-export default DetalleRestaurante;
+export default withRouter(DetalleRestaurante);

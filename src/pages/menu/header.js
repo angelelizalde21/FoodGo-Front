@@ -84,7 +84,7 @@ const Header = ({ usserLogged, handleLoggin }) => {
       </Toolbar>
 
     </AppBar>
-    <Carrito open={openCarrito} handleClose={() => setOpenCarrito(false)} />
+    {openCarrito && <Carrito open={openCarrito} handleClose={() => setOpenCarrito(false)} />}
   </div>
 }
 

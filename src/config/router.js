@@ -24,14 +24,14 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
     )} />
 );
 
-const Routers = ({ usserLogged, handleLoggin }) => {
+const Routers = ({ usserLogged, handleLoggin, handleUserLogginData }) => {
 
     return <Router>
         <Switch>
             <PublicRoute
                 exact
                 path='/'
-                component={() => <Inicio usserLogged={usserLogged} handleLoggin={handleLoggin} />}
+                component={() => <Inicio usserLogged={usserLogged} handleLoggin={handleLoggin} handleUserLogginData={handleUserLogginData} />}
             />
             <PublicRoute
                 path='/registro'

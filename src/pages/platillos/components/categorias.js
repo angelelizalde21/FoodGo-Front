@@ -34,7 +34,7 @@ const Categorias = ({ values, handleChange }) => {
     label="Categoria"
     className={classes.formControl}
     value={values.categoria}
-    onChange={handleChange('categoria')}
+    onChange={handleChange}
     SelectProps={{
       MenuProps: {
         className: classes.menu,
@@ -46,7 +46,7 @@ const Categorias = ({ values, handleChange }) => {
     <MenuItem value={''}>
       <em>NONE</em>
     </MenuItem>
-    {data && data.getCategoria.map((item) => <MenuItem key={item}
+    {data && data.getCategoria.map((item) => <MenuItem key={item._id}
       value={item}>
       {String(item.nombre).toUpperCase()}
     </MenuItem>)}
