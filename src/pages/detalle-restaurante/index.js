@@ -11,7 +11,7 @@ import Header from '../menu/header';
 import Cuadricula from '../platillos/components/cuadricula';
 import Detalle from './components/detalle';
 
-const DetalleRestaurante = ({ usserLogged, handleLoggin, location }) => {
+const DetalleRestaurante = ({ usserLogged, handleLoggin, handleUserLogginData, location }) => {
     const [datos, setDatos] = useState(null);
 
     useEffect(() => {
@@ -19,7 +19,7 @@ const DetalleRestaurante = ({ usserLogged, handleLoggin, location }) => {
     }, []);
 
     return <div>
-        <Header usserLogged={usserLogged} handleLoggin={handleLoggin} />
+        <Header usserLogged={usserLogged} handleLoggin={handleLoggin} handleUserLogginData={handleUserLogginData} />
         <Scrollbars style={{ width: '100%', height: 'calc(100vh - 64px)' }}>
             {datos && <Detalle data={datos} />}
             <Divider style={{ marginTop: 10 }} />

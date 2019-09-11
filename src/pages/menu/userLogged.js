@@ -17,14 +17,29 @@ const USER_DATA = gql`
 }
 `;
 
+const LOGED_USER_DATA = gql`
+query {
+    userState @client {
+        userData {
+        _id
+        nombre
+        email
+        avatar
+        genero
+        }
+  }
+}
+`;
+
 const UserLogged = ({ handleLoggin, handleClose, anchorEl, handleClick, setOpenCarrito, handleUserLogginData }) => {
 
-    const { data, loading } = useQuery(USER_DATA);
-    console.log(data);
+    const { data } = useQuery(USER_DATA);
+    const { data: LoginUser } = useQuery(LOGED_USER_DATA);
+
     useEffect(() => {
         if (data) {
             if (data.getLoginUser) {
-                handleUserLogginData(data.getLoginUser)
+                handleUserLogginData({ ...data.getLoginUser })
             }
         }
     }, [data])
@@ -34,7 +49,7 @@ const UserLogged = ({ handleLoggin, handleClose, anchorEl, handleClick, setOpenC
             edge="end"
             aria-haspopup="true"
             color="primary"
-            onClick={() => setOpenCarrito(true)}
+            onClick={() => setOpenCarrito(true, LoginUser)}
         >
             <Icon>shopping_cart</Icon>
         </IconButton>

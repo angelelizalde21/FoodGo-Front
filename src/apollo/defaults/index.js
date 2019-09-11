@@ -3,9 +3,9 @@ export default {
         __typename: 'loginState',
         userLogged: false
     },
-    userInLogin: {
-        __typename: 'userInLogin',
-        userData: {}
+    userState: {
+        __typename: 'userState',
+        userData: []
 
     }
 }

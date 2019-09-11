@@ -5,9 +5,7 @@ import client from './apollo';
 import { useQuery } from '@apollo/react-hooks';
 
 import gql from 'graphql-tag';
-import { Query } from 'react-apollo';
 import Routers from './config/router';
-
 
 let theme = createMuiTheme({
   palette: {
@@ -33,6 +31,8 @@ query {
 }
 `;
 
+
+
 function App() {
 
   const { data } = useQuery(LOGED_USER_QUERY);
@@ -53,8 +53,8 @@ function App() {
   const handleUserLogginData = (Datos) => {
     client.mutate({
       mutation: gql`
-        mutation userInLogin($datos: Any) {
-          userInLogin(datos: $datos) @client{
+        mutation setUserData($datos: Any) {
+          setUserData(datos: $datos) @client{
               data
           }
         }

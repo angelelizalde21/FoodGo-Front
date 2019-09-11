@@ -30,7 +30,7 @@ const REST = gql`
 }
 `;
 
-const Restaurantes = ({ usserLogged, handleLoggin }) => {
+const Restaurantes = ({ usserLogged, handleLoggin, handleUserLogginData }) => {
     const { data, loading } = useQuery(REST);
     const [Datos, setDatos] = React.useState([]);
     const [values, setValues] = React.useState({ restaurante: '' });
@@ -64,7 +64,7 @@ const Restaurantes = ({ usserLogged, handleLoggin }) => {
     }
 
     return <div>
-        <Header usserLogged={usserLogged} handleLoggin={handleLoggin} />
+        <Header usserLogged={usserLogged} handleLoggin={handleLoggin} handleUserLogginData={handleUserLogginData} />
         <Scrollbars style={{ width: '100%', height: 'calc(100vh - 64px)' }}>
             <Filtros handleChange={handleChange} values={values} />
             <Divider style={{ marginTop: 10 }} />

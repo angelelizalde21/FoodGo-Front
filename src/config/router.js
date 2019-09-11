@@ -26,38 +26,57 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
 
 const Routers = ({ usserLogged, handleLoggin, handleUserLogginData }) => {
 
-    return <Router>
-        <Switch>
-            <PublicRoute
-                exact
-                path='/'
-                component={() => <Inicio usserLogged={usserLogged} handleLoggin={handleLoggin} handleUserLogginData={handleUserLogginData} />}
-            />
-            <PublicRoute
-                path='/registro'
-                component={() => <Registro handleLoggin={handleLoggin} />}
-            />
-            <PublicRoute
-                path="/login"
-                component={() => <Login handleLoggin={handleLoggin} />}
-            />
-            <PrivateRoute
-                path="/platillos"
-                usserLogged={usserLogged}
-                component={() => <Platillos usserLogged={usserLogged} handleLoggin={handleLoggin} />}
-            />
-            <PrivateRoute
-                path="/restaurantes"
-                usserLogged={usserLogged}
-                component={() => <Restaurantes usserLogged={usserLogged} handleLoggin={handleLoggin} />}
-            />
-            <PrivateRoute
-                path="/restaurante"
-                usserLogged={usserLogged}
-                component={() => <DetalleRestaurante usserLogged={usserLogged} handleLoggin={handleLoggin} />}
-            />
-        </Switch>
-    </Router>
+    return <div>
+        <Router>
+            <Switch>
+                <PublicRoute
+                    exact
+                    path='/'
+                    component={() => <Inicio
+                        usserLogged={usserLogged}
+                        handleLoggin={handleLoggin}
+                        handleUserLogginData={handleUserLogginData}
+                    />}
+                />
+                <PublicRoute
+                    path='/registro'
+                    component={() => <Registro handleLoggin={handleLoggin} />}
+                />
+                <PublicRoute
+                    path="/login"
+                    component={() => <Login handleLoggin={handleLoggin} />}
+                />
+                <PrivateRoute
+                    path="/platillos"
+                    usserLogged={usserLogged}
+                    component={() => <Platillos
+                        usserLogged={usserLogged}
+                        handleLoggin={handleLoggin}
+                        handleUserLogginData={handleUserLogginData}
+                    />}
+                />
+                <PrivateRoute
+                    path="/restaurantes"
+                    usserLogged={usserLogged}
+                    component={() => <Restaurantes
+                        usserLogged={usserLogged}
+                        handleLoggin={handleLoggin}
+                        handleUserLogginData={handleUserLogginData}
+                    />}
+                />
+                <PrivateRoute
+                    path="/restaurante"
+                    usserLogged={usserLogged}
+                    component={() => <DetalleRestaurante
+                        usserLogged={usserLogged}
+                        handleLoggin={handleLoggin}
+                        handleUserLogginData={handleUserLogginData}
+                    />}
+                />
+            </Switch>
+        </Router>
+    </div>
+
 }
 
 

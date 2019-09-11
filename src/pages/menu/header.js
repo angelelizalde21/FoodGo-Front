@@ -13,7 +13,7 @@ import UserLogged from './userLogged';
 const Header = ({ usserLogged, handleLoggin, handleUserLogginData }) => {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [openCarrito, setOpenCarrito] = React.useState(false);
+  const [openCarrito, setOpenCarrito] = React.useState({ open: false, usuario: null });
 
   const CollisionLink = (link) => React.forwardRef((props, ref) => (
     <Link innerRef={ref} to={link} {...props} />
@@ -50,15 +50,15 @@ const Header = ({ usserLogged, handleLoggin, handleUserLogginData }) => {
         }
         <div style={{ flexGrow: 1 }}></div>
         {usserLogged ? <div>
-          <UserLogged 
-            handleLoggin={handleLoggin} 
-            handleClose={handleClose} 
+          <UserLogged
+            handleLoggin={handleLoggin}
+            handleClose={handleClose}
             anchorEl={anchorEl}
             handleClick={handleClick}
-            setOpenCarrito={setOpenCarrito}
+            setOpenCarrito={(open, usuario) => setOpenCarrito({ open: open, usuario: usuario })}
             handleUserLogginData={handleUserLogginData}
-            />
-           </div> :
+          />
+        </div> :
           <div>
             <Button component={CollisionLink('registro')} color="primary" style={{ marginRight: 20 }}>
               Registrarse
@@ -72,7 +72,7 @@ const Header = ({ usserLogged, handleLoggin, handleUserLogginData }) => {
       </Toolbar>
 
     </AppBar>
-    {openCarrito && <Carrito open={openCarrito} handleClose={() => setOpenCarrito(false)} />}
+    {openCarrito.open && <Carrito open={openCarrito.open} usuario={openCarrito.usuario} handleClose={() => setOpenCarrito(false)} />}
   </div>
 }
 

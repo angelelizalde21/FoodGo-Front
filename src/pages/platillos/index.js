@@ -28,7 +28,7 @@ const PLAT = gql`
 }
 `;
 
-const Platillos = ({ usserLogged, handleLoggin }) => {
+const Platillos = ({ usserLogged, handleLoggin, handleUserLogginData }) => {
   const { data, loading } = useQuery(PLAT);
 
   const [Datos, setDatos] = React.useState([]);
@@ -83,7 +83,7 @@ const Platillos = ({ usserLogged, handleLoggin }) => {
   }
 
   return <div>
-    <Header usserLogged={usserLogged} handleLoggin={handleLoggin} />
+    <Header usserLogged={usserLogged} handleLoggin={handleLoggin} handleUserLogginData={handleUserLogginData} />
     <Scrollbars style={{ width: '100%', height: 'calc(100vh - 64px)' }}>
       <Filtros handleCategoriaChange={handleCategoriaChange} handlePlatilloBuscar={handlePlatilloBuscar} values={values} />
       <Divider style={{ marginTop: 10 }} />

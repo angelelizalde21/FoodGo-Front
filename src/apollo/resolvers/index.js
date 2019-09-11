@@ -11,13 +11,13 @@ const resolvers = {
         },
 
         setUserData: (parent, { datos }, { cache }) => {
-            const userInLogin = {
+            const userState = {
                 userData: datos,
-                __typename: 'userInLogin'
+                __typename: 'userState'
             };
-            const data = { userInLogin: userInLogin }
+            const data = { userState: userState }
             cache.writeData({ data });
-            return userInLogin;
+            return userState;
         }
     }
 }

@@ -10,8 +10,9 @@ import Contenedor from './components/contenedor'
 import Cargando from '../../config/cargando';
 
 const BUZON = gql`
-{ 
-  getBuzon {
+
+ query getBuzon($data: BuzonInput) {
+    getBuzon(data: $data){
     usuario {
       nombre
     }
@@ -29,8 +30,8 @@ const BUZON = gql`
 `;
 
 
-const Carrito = ({ open, handleClose }) => {
-  const { data, loading } = useQuery(BUZON);
+const Carrito = ({ open, usuario, handleClose }) => {
+  const { data, loading } = useQuery(BUZON, { variables: { data: { usuario: usuario._id } } });
   const [Datos, setDatos] = React.useState([]);
 
   useEffect(() => {
@@ -42,7 +43,7 @@ const Carrito = ({ open, handleClose }) => {
   }, [data])
 
   return <Drawer anchor="right" open={open} onClose={handleClose} style={{ width: '150' }}>
-    {loading ? <Cargando /> : <Contenedor handleClose={handleClose} Datos={Datos} /> }
+    {loading ? <Cargando /> : <Contenedor handleClose={handleClose} Datos={Datos} />}
   </Drawer>
 }
 
