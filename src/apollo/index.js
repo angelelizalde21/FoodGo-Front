@@ -9,7 +9,9 @@ import { withClientState } from 'apollo-link-state';
 import defaults from './defaults';
 import resolvers from './resolvers';
 
-const HTTP_HOST = 'http://ubereats-backend.jgu3pdgbri.us-west-2.elasticbeanstalk.com/';
+// const HTTP_HOST = 'http://ubereats-backend.jgu3pdgbri.us-west-2.elasticbeanstalk.com/';
+
+const HTTP_HOST = 'http://localhost:8080'
 
 const httpLink = new createUploadLink({
   uri: HTTP_HOST,

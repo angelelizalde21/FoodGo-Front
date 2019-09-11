@@ -11,10 +11,6 @@ import Cards from './components/cards';
 
 const Inicio = ({ usserLogged, handleLoggin, handleUserLogginData }) => {
 
- 
-
-
-
   return <div>
     <Header usserLogged={usserLogged} handleLoggin={handleLoggin} handleUserLogginData={handleUserLogginData} />
     <Banner usserLogged={usserLogged} />

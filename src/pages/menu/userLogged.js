@@ -20,7 +20,7 @@ const USER_DATA = gql`
 const UserLogged = ({ handleLoggin, handleClose, anchorEl, handleClick, setOpenCarrito, handleUserLogginData }) => {
 
     const { data, loading } = useQuery(USER_DATA);
-
+    console.log(data);
     useEffect(() => {
         if (data) {
             if (data.getLoginUser) {

@@ -32,14 +32,12 @@ const Login = ({ history, handleLoggin }) => {
 
   useEffect(() => {
     if (data) {
-      console.log(data)
       if (data.doLogin) {
         localStorage.setItem('jwt', data.doLogin.token);
         handleLoggin(true);
         history.push('/');
       }
     }
-
   }, [data])
 
 

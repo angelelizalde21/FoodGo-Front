@@ -28,7 +28,7 @@ const Contenedor = ({ Datos, handleClose }) => {
         </div>
         <List>
             <Divider></Divider>
-            {Datos.detalle.map((tile, index) => (
+            {Datos.detalle && Datos.detalle.map((tile, index) => (
                 <Platillo tile={tile} key={index} />
             ))}
         </List>
