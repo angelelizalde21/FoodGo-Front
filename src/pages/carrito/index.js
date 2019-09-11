@@ -30,6 +30,7 @@ const Carrito = ({ open, handleClose }) => {
     const { data, loading } = useQuery(BUZON);
     const [Datos, setDatos] = React.useState([]);
 
+    console.log(data)
     useEffect(() => {
         if (data) {
             if (data.getBuzon) {

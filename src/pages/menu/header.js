@@ -5,15 +5,12 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import Icon from '@material-ui/core/Icon';
-import AccountCircle from '@material-ui/icons/AccountCircle';
 
 // Componentes
-import MenuUsuario from './menuUsuario';
 import Carrito from '../carrito';
+import UserLogged from './userLogged';
 
-const Header = ({ usserLogged, handleLoggin }) => {
+const Header = ({ usserLogged, handleLoggin, handleUserLogginData }) => {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [openCarrito, setOpenCarrito] = React.useState(false);
@@ -53,24 +50,15 @@ const Header = ({ usserLogged, handleLoggin }) => {
         }
         <div style={{ flexGrow: 1 }}></div>
         {usserLogged ? <div>
-          <IconButton
-            edge="end"
-            aria-haspopup="true"
-            color="primary"
-            onClick={() => setOpenCarrito(true)}
-          >
-            <Icon>shopping_cart</Icon>
-          </IconButton>
-          <IconButton
-            edge="end"
-            aria-haspopup="true"
-            color="primary"
-            onClick={handleClick}
-          >
-            <AccountCircle />
-          </IconButton>
-          <MenuUsuario open={Boolean(anchorEl)} anchorEl={anchorEl} handleClose={handleClose} handleLoggin={handleLoggin} />
-        </div> :
+          <UserLogged 
+            handleLoggin={handleLoggin} 
+            handleClose={handleClose} 
+            anchorEl={anchorEl}
+            handleClick={handleClick}
+            setOpenCarrito={setOpenCarrito}
+            handleUserLogginData={handleUserLogginData}
+            />
+           </div> :
           <div>
             <Button component={CollisionLink('registro')} color="primary" style={{ marginRight: 20 }}>
               Registrarse
