@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import client from './apollo';
+import { useQuery } from '@apollo/react-hooks';
 
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
@@ -34,7 +35,9 @@ query {
 
 function App() {
 
-  const handleLoggin = (usuarioLogeado = true) => {
+  const { data } = useQuery(LOGED_USER_QUERY);
+
+  const handleLoggin = (usuarioLogeado) => {
     client.mutate({
       mutation: gql`
         mutation setUserLogged($logged: Boolean) {
@@ -47,7 +50,7 @@ function App() {
     })
   }
 
-  const handleUserLogginData = (Datos = true) => {
+  const handleUserLogginData = (Datos) => {
     client.mutate({
       mutation: gql`
         mutation userInLogin($datos: Any) {
@@ -62,26 +65,17 @@ function App() {
 
   useEffect(() => {
     const token = localStorage.getItem('jwt');
-    if (token) handleLoggin();
+    if (token) handleLoggin(true);
   }, [])
 
   return (
     <div>
       <ThemeProvider theme={theme}>
-        <Query query={LOGED_USER_QUERY}>
-          {
-            ({ data }) => {
-              console.log("TCL: App -> data", data)
-              return (
-                <Routers
-                  handleLoggin={handleLoggin}
-                  usserLogged={data.loginState.userLogged}
-                  handleUserLogginData={handleUserLogginData}
-                />
-              );
-            }
-          }
-        </Query>
+        <Routers
+          handleLoggin={handleLoggin}
+          usserLogged={data.loginState.userLogged}
+          handleUserLogginData={handleUserLogginData}
+        />
       </ThemeProvider>
     </div>
   );

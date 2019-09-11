@@ -21,7 +21,6 @@ const UserLogged = ({ handleLoggin, handleClose, anchorEl, handleClick, setOpenC
 
     const { data, loading } = useQuery(USER_DATA);
 
-    console.log(data)
     useEffect(() => {
         if (data) {
             if (data.getLoginUser) {
