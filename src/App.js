@@ -3,7 +3,6 @@ import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import client from './apollo';
 import { useQuery } from '@apollo/react-hooks';
-
 import gql from 'graphql-tag';
 import Routers from './config/router';
 
@@ -36,7 +35,7 @@ query {
 function App() {
 
   const { data } = useQuery(LOGED_USER_QUERY);
-  
+
 
   const handleLoggin = (usuarioLogeado) => {
     client.mutate({

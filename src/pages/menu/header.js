@@ -67,7 +67,7 @@ const Header = ({ usserLogged, handleLoggin, handleUserLogginData, history }) =>
       </Toolbar>
 
     </AppBar>
-    {openCarrito.open && <Carrito open={openCarrito.open} usuario={openCarrito.usuario} handleClose={() => setOpenCarrito(false)} />}
+    {openCarrito.open && <Carrito open={openCarrito.open} handleClose={() => setOpenCarrito(false)} />}
   </div>
 }
 

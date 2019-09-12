@@ -5,41 +5,16 @@ import { onError } from 'apollo-link-error';
 import { ApolloLink } from 'apollo-link';
 import { withClientState } from 'apollo-link-state';
 
-
-//para subscriptions
-import { WebSocketLink } from 'apollo-link-ws';
-import { split } from 'apollo-link';
-import { getMainDefinition } from 'apollo-utilities';
-
 import defaults from './defaults';
 import resolvers from './resolvers';
 
 const HTTP_HOST = 'http://ubereats-backend.jgu3pdgbri.us-west-2.elasticbeanstalk.com/graphql';
-const WS_HOST = 'ws://ubereats-backend.jgu3pdgbri.us-west-2.elasticbeanstalk.com/graphql';
+
 
 const httpLink = new createUploadLink({
   uri: HTTP_HOST,
 });
 
-const wsLink = new WebSocketLink({
-  uri: WS_HOST,
-  options: {
-    reconnect: true
-  }
-});
-
-const link = split(
-  // split based on operation type
-  ({ query }) => {
-    const definition = getMainDefinition(query);
-    return (
-      definition.kind === 'OperationDefinition' &&
-      definition.operation === 'subscription'
-    );
-  },
-  wsLink,
-  httpLink,
-);
 const cache = new InMemoryCache();
 
 const stateLink = withClientState({
@@ -80,7 +55,7 @@ const client = new ApolloClient({
     }),
     stateLink,
     AuthLink,
-    link,
+    httpLink,
   ]),
   cache,
 });

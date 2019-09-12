@@ -2,38 +2,61 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Grid, IconButton, List, Icon, Divider } from '@material-ui/core';
 import Platillo from './platillo';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery, useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
+import client from '../../../apollo';
 
-const BUZON_STATE = gql`
-query {
-buzonState @client {
-    buzonData{        
-      _id
-    usuario {
-        _id
-      nombre
-    }
-    detalle {
-      restaurante {
+const EDITAR_BUZON = gql`
+  mutation updateBuzon($data: BuzonUpdateInput) {
+    updateBuzon(data: $data) {
+      usuario {
           _id
-        nombre
+          nombre
       }
-      platillo {
-          _id
-        nombre
-      }
-      cantidad
     }
   }
-}
-}
 `;
 
-const Contenedor = ({ handleClose }) => {
+const Contenedor = ({ handleClose, Datos }) => {
     const classes = useStyles();
-    const { data } = useQuery(BUZON_STATE);
-    
+    const [updateBuzon] = useMutation(EDITAR_BUZON);
+    console.log(Datos)
+
+    const handleEliminarPlatillo = (tile) => {
+        const buzon = Datos;
+
+        const newData = {
+            _id: buzon._id,
+            usuario: buzon.usuario._id,
+        }
+
+        newData.detalle = [];
+        // Se agregan platillos existentes
+        buzon.detalle.forEach(item => {
+            newData.detalle.push({
+                restaurante: item.restaurante._id,
+                platillo: item.platillo._id,
+                cantidad: 1,
+            })
+        });
+
+        // Eliminar id
+
+        const index = newData.detalle.indexOf(tile);
+        newData.detalle.splice(index, 1);
+
+        updateBuzon({
+            variables: {
+                data: {
+                    _id: newData._id,
+                    usuario: newData.usuario,
+                    detalle: newData.detalle
+                }
+            }
+        })
+    }
+
+
     return <div
         className={classes.fullList}
         role="presentation"
@@ -57,8 +80,8 @@ const Contenedor = ({ handleClose }) => {
         </div>
         <List>
             <Divider></Divider>
-            {data && data.buzonState && data.buzonState.buzonData && data.buzonState.buzonData.detalle && data.buzonState.buzonData.detalle.map((tile, index) => (
-                <Platillo tile={tile} key={index} />
+            {Datos && Datos.detalle.map((tile, index) => (
+                <Platillo tile={tile} handleEliminarPlatillo={handleEliminarPlatillo} key={index} />
             ))}
         </List>
     </div>

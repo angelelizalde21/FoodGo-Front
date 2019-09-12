@@ -3,7 +3,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Icon from '@material-ui/core/Icon';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuUsuario from './menuUsuario';
-import { useQuery, useSubscription } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import client from '../../apollo';
 
@@ -56,31 +56,21 @@ const BUZON = gql`
 }
 `;
 
-const BUZON_ADDED = gql`
-subscription {
-  buzonAdded {
-    usuario {
-      _id
-      nombre
-    }
-  }
-}
-`;
+
 
 const UserLogged = ({ handleLoggin, handleClose, anchorEl, handleClick, setOpenCarrito, handleUserLogginData }) => {
 
   const { data } = useQuery(USER_DATA);
   const { data: LoginUser } = useQuery(LOGED_USER_DATA);
   const { data: BuzonData } = useQuery(BUZON, { variables: { data: { usuario: LoginUser.userState.userData._id } } });
-  const { data: DataSubs } = useSubscription(BUZON_ADDED);
 
   useEffect(() => {
     if (data) {
       if (data.getLoginUser) {
-        handleUserLogginData({ ...data.getLoginUser })
+        handleUserLogginData({ ...data.getLoginUser });
       }
     }
-  }, [data])
+  }, [data]);
 
   useEffect(() => {
     if (BuzonData) {
@@ -89,12 +79,6 @@ const UserLogged = ({ handleLoggin, handleClose, anchorEl, handleClick, setOpenC
       }
     }
   }, [BuzonData]);
-
-  useEffect(() => {
-    if (DataSubs) {
-      console.log(DataSubs)
-    }
-  }, [DataSubs])
 
   const handleBuzonData = (Datos) => {
     client.mutate({
