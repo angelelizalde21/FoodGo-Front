@@ -3,11 +3,6 @@ import { Typography } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 
 const Banner = () => {
-
-  const handleBuscarKeyPress = () => {
-
-  }
-
   return <div style={{ background: '#FF4400', height: '28vh', width: '100%', display: "flex" }}>
     <div style={{ width: '100vw', padding: '3vw' }}>
       <Grid container>

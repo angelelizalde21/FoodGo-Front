@@ -3,8 +3,9 @@ import IconButton from '@material-ui/core/IconButton';
 import Icon from '@material-ui/core/Icon';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuUsuario from './menuUsuario';
-import { useQuery, useMutation } from '@apollo/react-hooks';
+import { useQuery, useSubscription } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
+import client from '../../apollo';
 
 const USER_DATA = gql`
 { getLoginUser {
@@ -31,39 +32,103 @@ query {
 }
 `;
 
+const BUZON = gql`
+
+ query getBuzon($data: BuzonInput) {
+    getBuzon(data: $data){
+      _id
+    usuario {
+      _id
+      nombre
+    }
+    detalle {
+      restaurante {
+        _id
+        nombre
+      }
+      platillo {
+        _id
+        nombre
+      }
+      cantidad
+    }
+  }
+}
+`;
+
+const BUZON_ADDED = gql`
+subscription {
+  buzonAdded {
+    usuario {
+      _id
+      nombre
+    }
+  }
+}
+`;
+
 const UserLogged = ({ handleLoggin, handleClose, anchorEl, handleClick, setOpenCarrito, handleUserLogginData }) => {
 
-    const { data } = useQuery(USER_DATA);
-    const { data: LoginUser } = useQuery(LOGED_USER_DATA);
+  const { data } = useQuery(USER_DATA);
+  const { data: LoginUser } = useQuery(LOGED_USER_DATA);
+  const { data: BuzonData } = useQuery(BUZON, { variables: { data: { usuario: LoginUser.userState.userData._id } } });
+  const { data: DataSubs } = useSubscription(BUZON_ADDED);
 
-    useEffect(() => {
-        if (data) {
-            if (data.getLoginUser) {
-                handleUserLogginData({ ...data.getLoginUser })
+  useEffect(() => {
+    if (data) {
+      if (data.getLoginUser) {
+        handleUserLogginData({ ...data.getLoginUser })
+      }
+    }
+  }, [data])
+
+  useEffect(() => {
+    if (BuzonData) {
+      if (BuzonData.getBuzon) {
+        handleBuzonData(BuzonData.getBuzon[0]);
+      }
+    }
+  }, [BuzonData]);
+
+  useEffect(() => {
+    if (DataSubs) {
+      console.log(DataSubs)
+    }
+  }, [DataSubs])
+
+  const handleBuzonData = (Datos) => {
+    client.mutate({
+      mutation: gql`
+            mutation setBuzonData($datos: Any) {
+              setBuzonData(datos: $datos) @client{
+                  data
+              }
             }
-        }
-    }, [data])
+          `,
+      variables: { datos: Datos }
+    })
+  }
 
-    return <div>
-        <IconButton
-            edge="end"
-            aria-haspopup="true"
-            color="primary"
-            onClick={() => setOpenCarrito(true, LoginUser)}
-        >
-            <Icon>shopping_cart</Icon>
-        </IconButton>
-        <IconButton
-            edge="end"
-            aria-haspopup="true"
-            color="primary"
-            onClick={handleClick}
-        >
-            <AccountCircle />
-        </IconButton>
-        <MenuUsuario open={Boolean(anchorEl)} anchorEl={anchorEl} handleClose={handleClose} handleLoggin={handleLoggin} />
+  return <div>
+    <IconButton
+      edge="end"
+      aria-haspopup="true"
+      color="primary"
+      onClick={() => setOpenCarrito(true, LoginUser)}
+    >
+      <Icon>shopping_cart</Icon>
+    </IconButton>
+    <IconButton
+      edge="end"
+      aria-haspopup="true"
+      color="primary"
+      onClick={handleClick}
+    >
+      <AccountCircle />
+    </IconButton>
+    <MenuUsuario open={Boolean(anchorEl)} anchorEl={anchorEl} handleClose={handleClose} handleLoggin={handleLoggin} />
 
-    </div>
+  </div>
 }
 
 export default UserLogged;

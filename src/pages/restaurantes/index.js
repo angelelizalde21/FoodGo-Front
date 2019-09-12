@@ -25,6 +25,9 @@ const REST = gql`
             descripcion
             imagen
             precio
+            restaurante {
+                _id
+            }
         }
     }
 }

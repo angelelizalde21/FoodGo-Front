@@ -1,49 +1,13 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Drawer from '@material-ui/core/Drawer';
-import { useQuery } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
-
-
 
 // Componentes
 import Contenedor from './components/contenedor'
-import Cargando from '../../config/cargando';
-
-const BUZON = gql`
-
- query getBuzon($data: BuzonInput) {
-    getBuzon(data: $data){
-    usuario {
-      nombre
-    }
-    detalle {
-      restaurante {
-        nombre
-      }
-      platillo {
-        nombre
-      }
-      cantidad
-    }
-  }
-}
-`;
-
 
 const Carrito = ({ open, usuario, handleClose }) => {
-  const { data, loading } = useQuery(BUZON, { variables: { data: { usuario: usuario._id } } });
-  const [Datos, setDatos] = React.useState([]);
-
-  useEffect(() => {
-    if (data) {
-      if (data.getBuzon) {
-        setDatos(data.getBuzon[0]);
-      }
-    }
-  }, [data])
 
   return <Drawer anchor="right" open={open} onClose={handleClose} style={{ width: '150' }}>
-    {loading ? <Cargando /> : <Contenedor handleClose={handleClose} Datos={Datos} />}
+    <Contenedor handleClose={handleClose} />
   </Drawer>
 }
 

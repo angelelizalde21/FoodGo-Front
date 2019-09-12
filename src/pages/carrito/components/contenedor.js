@@ -2,9 +2,38 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Grid, IconButton, List, Icon, Divider } from '@material-ui/core';
 import Platillo from './platillo';
+import { useQuery } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
 
-const Contenedor = ({ Datos, handleClose }) => {
+const BUZON_STATE = gql`
+query {
+buzonState @client {
+    buzonData{        
+      _id
+    usuario {
+        _id
+      nombre
+    }
+    detalle {
+      restaurante {
+          _id
+        nombre
+      }
+      platillo {
+          _id
+        nombre
+      }
+      cantidad
+    }
+  }
+}
+}
+`;
+
+const Contenedor = ({ handleClose }) => {
     const classes = useStyles();
+    const { data } = useQuery(BUZON_STATE);
+    
     return <div
         className={classes.fullList}
         role="presentation"
@@ -28,7 +57,7 @@ const Contenedor = ({ Datos, handleClose }) => {
         </div>
         <List>
             <Divider></Divider>
-            {Datos.detalle && Datos.detalle.map((tile, index) => (
+            {data && data.buzonState && data.buzonState.buzonData && data.buzonState.buzonData.detalle && data.buzonState.buzonData.detalle.map((tile, index) => (
                 <Platillo tile={tile} key={index} />
             ))}
         </List>

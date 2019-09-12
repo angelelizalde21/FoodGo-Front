@@ -7,5 +7,10 @@ export default {
         __typename: 'userState',
         userData: []
 
+    },
+    buzonState: {
+        __typename: 'buzonState',
+        buzonData: []
+
     }
 }

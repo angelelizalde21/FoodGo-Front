@@ -36,6 +36,7 @@ query {
 function App() {
 
   const { data } = useQuery(LOGED_USER_QUERY);
+  
 
   const handleLoggin = (usuarioLogeado) => {
     client.mutate({

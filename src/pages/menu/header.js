@@ -1,16 +1,16 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import Logo from '../../assets/FoodGo.png';
 
 // Componentes
 import Carrito from '../carrito';
 import UserLogged from './userLogged';
 
-const Header = ({ usserLogged, handleLoggin, handleUserLogginData }) => {
+const Header = ({ usserLogged, handleLoggin, handleUserLogginData, history }) => {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [openCarrito, setOpenCarrito] = React.useState({ open: false, usuario: null });
@@ -30,12 +30,7 @@ const Header = ({ usserLogged, handleLoggin, handleUserLogginData }) => {
   return <div>
     <AppBar position="static">
       <Toolbar style={{ background: 'white' }}>
-        <Typography style={{ fontWeight: 'bold', color: 'black', fontSize: 20 }}>
-          Food
-      </Typography>
-        <Typography style={{ fontWeight: 'bold', color: '#FF4400', fontSize: 20 }}>
-          Go
-      </Typography>
+        <img alt="" src={Logo} width="80" height="30" onClick={() => history.push('/')} />
         {
           usserLogged && <div style={{ marginLeft: 30 }}>
             <Grid container justify={'center'} alignContent={'center'} alignItems={'center'} spacing={2}>
@@ -76,4 +71,4 @@ const Header = ({ usserLogged, handleLoggin, handleUserLogginData }) => {
   </div>
 }
 
-export default Header;
+export default withRouter(Header);

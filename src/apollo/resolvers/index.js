@@ -9,7 +9,6 @@ const resolvers = {
             cache.writeData({ data });
             return usserLogged;
         },
-
         setUserData: (parent, { datos }, { cache }) => {
             const userState = {
                 userData: datos,
@@ -18,7 +17,16 @@ const resolvers = {
             const data = { userState: userState }
             cache.writeData({ data });
             return userState;
-        }
+        },
+        setBuzonData:  (parent, { datos }, { cache }) => {
+            const buzonState = {
+                buzonData: datos,
+                __typename: 'buzonState'
+            };
+            const data = { buzonState: buzonState }
+            cache.writeData({ data });
+            return buzonState;
+        },
     }
 }
 
