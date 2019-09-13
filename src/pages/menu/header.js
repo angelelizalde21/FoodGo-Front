@@ -50,7 +50,7 @@ const Header = ({ usserLogged, handleLoggin, handleUserLogginData, history }) =>
             handleClose={handleClose}
             anchorEl={anchorEl}
             handleClick={handleClick}
-            setOpenCarrito={(open, usuario) => setOpenCarrito({ open: open, usuario: usuario })}
+            setOpenCarrito={(open) => { setOpenCarrito({ open }) }}
             handleUserLogginData={handleUserLogginData}
           />
         </div> :

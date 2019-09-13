@@ -27,13 +27,13 @@ const NUEVO_BUZON = gql`
 `;
 
 
-const BUZON_STATE = gql`
-query {
-buzonState @client {
-    buzonData{        
+const BUZON = gql`
+
+ query getBuzon($data: BuzonInput) {
+    getBuzon(data: $data){
       _id
     usuario {
-        _id
+      _id
       nombre
     }
     detalle {
@@ -48,7 +48,6 @@ buzonState @client {
       cantidad
     }
   }
-}
 }
 `;
 
@@ -69,12 +68,12 @@ query {
 const Platillo = ({ tile }) => {
   const [updateBuzon] = useMutation(AGREAR_BUZON);
   const [addBuzon] = useMutation(NUEVO_BUZON);
-  const { data: BuzonData } = useQuery(BUZON_STATE);
   const { data: LoginUser } = useQuery(LOGED_USER_DATA);
+  const { data: BuzonData } = useQuery(BUZON, { variables: { data: { usuario: LoginUser.userState.userData._id } } });
 
   const handleAgregarCarrito = () => {
-    const state = BuzonData.buzonState.buzonData;
-
+    const state = BuzonData.getBuzon[0];
+    console.log(state)
     if (state && state.detalle && state.detalle.length > 0) {
       // Se agrega usuario
       const newData = {
