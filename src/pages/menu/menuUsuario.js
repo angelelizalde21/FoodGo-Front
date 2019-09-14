@@ -1,14 +1,19 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, withRouter } from 'react-router-dom';
 import { Popover, MenuItem } from '@material-ui/core';
 
-const MenuUsuario = ({ open, anchorEl, handleClose, handleLoggin }) => {
+const MenuUsuario = ({ open, anchorEl, handleClose, handleLoggin, history }) => {
 
     const handleCerrarSesion = () => {
         handleLoggin(false);
         localStorage.removeItem("jwt");
         return (<Redirect to="/" />)
     }
+
+    const handlePedidiosClick = () => {
+        history.push('/pedidos');
+    }
+
     return <div>
         <Popover
             open={open}
@@ -23,10 +28,10 @@ const MenuUsuario = ({ open, anchorEl, handleClose, handleLoggin }) => {
                 horizontal: 'center',
             }}
         >
-            <MenuItem onClick={handleClose}>Pedidos</MenuItem>
+            <MenuItem onClick={handlePedidiosClick}>Pedidos</MenuItem>
             <MenuItem onClick={handleCerrarSesion}>Cerrar sesión</MenuItem>
         </Popover>
     </div>
 }
 
-export default MenuUsuario;
+export default withRouter(MenuUsuario);

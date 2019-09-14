@@ -7,7 +7,8 @@ import Registro from '../pages/registro';
 import Login from '../pages/login';
 import Platillos from '../pages/platillos';
 import Restaurantes from '../pages/restaurantes';
-import DetalleRestaurante from '../pages/detalle-restaurante/index';
+import DetalleRestaurante from '../pages/detalle-restaurante';
+import Pedidos from '../pages/pedidos';
 
 const PublicRoute = ({ component: Component, ...rest }) => (
     <Route
@@ -68,6 +69,15 @@ const Routers = ({ usserLogged, handleLoggin, handleUserLogginData }) => {
                     path="/restaurante"
                     usserLogged={usserLogged}
                     component={() => <DetalleRestaurante
+                        usserLogged={usserLogged}
+                        handleLoggin={handleLoggin}
+                        handleUserLogginData={handleUserLogginData}
+                    />}
+                />
+                <PrivateRoute
+                    path="/pedidos"
+                    usserLogged={usserLogged}
+                    component={() => <Pedidos
                         usserLogged={usserLogged}
                         handleLoggin={handleLoggin}
                         handleUserLogginData={handleUserLogginData}

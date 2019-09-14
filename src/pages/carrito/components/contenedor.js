@@ -1,10 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Typography, Grid, IconButton, List, Icon, Divider } from '@material-ui/core';
+import { Typography, Grid, IconButton, List, Icon, Divider, Button } from '@material-ui/core';
 import Platillo from './platillo';
 
-const Contenedor = ({ handleClose, Datos, handleEliminarPlatillo }) => {
+const Contenedor = ({ handleClose, Datos, handleEliminarPlatillo, handleTerminarPedido }) => {
     const classes = useStyles();
+
+    const getNoPlatillos = () => {
+        let retorno = 0;
+        if (Datos) {
+            Datos.detalle.forEach(item => {
+                retorno++;
+            });
+        }
+        return retorno;
+    }
+
+    const getTotal = () => {
+        let retorno = 0;
+        if (Datos) {
+            Datos.detalle.forEach(item => {
+                retorno += Number(item.platillo.precio);
+            });
+        }
+        return retorno;
+    }
 
     return <div
         className={classes.fullList}
@@ -33,6 +53,13 @@ const Contenedor = ({ handleClose, Datos, handleEliminarPlatillo }) => {
                 <Platillo tile={tile} handleEliminarPlatillo={(tile) => handleEliminarPlatillo(tile, Datos)} key={index} />
             ))}
         </List>
+        <div style={{ position: 'fixed', bottom: 0, margin: 20 }}>
+            {getNoPlatillos() > 0 && <Button variant={'contained'} color={'primary'} style={{ width: 300 }} onClick={handleTerminarPedido}>
+                <div className={classes.numeroPlatillos}>{getNoPlatillos()}</div>
+                Terminar pedido
+                <Typography className={classes.totalPedido}>$ {getTotal()}</Typography>
+            </Button>}
+        </div>
     </div>
 };
 
@@ -48,6 +75,15 @@ const useStyles = makeStyles({
         marginTop: 10,
         fontSize: 20,
         marginLeft: 20
+    },
+    numeroPlatillos: {
+        border: "1px solid white",
+        marginRight: 20,
+        paddingLeft: 10,
+        paddingRight: 10
+    },
+    totalPedido: {
+        marginLeft: 10
     }
 });
 

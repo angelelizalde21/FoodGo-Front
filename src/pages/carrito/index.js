@@ -1,10 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Drawer from '@material-ui/core/Drawer';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
+import { NotificationManager } from 'react-notifications';
 
 // Componentes
 import Contenedor from './components/contenedor';
+import Recorido from './components/recorido';
+import Cargando from '../../config/cargando';
 
 const LOGED_USER_DATA = gql`
 query {
@@ -21,7 +24,6 @@ query {
 `;
 
 const BUZON = gql`
-
  query getBuzon($data: BuzonInput) {
     getBuzon(data: $data){
       _id
@@ -37,6 +39,7 @@ const BUZON = gql`
       platillo {
         _id
         nombre
+        precio
       }
       cantidad
     }
@@ -70,12 +73,20 @@ const Carrito = ({ open, handleClose }) => {
   const [updateBuzon] = useMutation(EDITAR_BUZON);
   const [deleteBuzon] = useMutation(Delete_BUZON);
 
+  const [Open, setOpen] = useState(false);
+
   useEffect(() => {
     refetch();
   }, [])
 
   const handleEliminarPlatillo = async (tile, Datos) => {
     const buzon = Datos;
+
+    // Eliminar id
+
+    const index = buzon.detalle.indexOf(tile);
+    buzon.detalle.splice(index, 1);
+
 
     const newData = {
       _id: buzon._id,
@@ -92,10 +103,6 @@ const Carrito = ({ open, handleClose }) => {
       })
     });
 
-    // Eliminar id
-
-    const index = newData.detalle.indexOf(tile);
-    newData.detalle.splice(index);
 
     // Si es el ultimo registro eliminar 
     if (newData.detalle.length === 0) {
@@ -120,8 +127,34 @@ const Carrito = ({ open, handleClose }) => {
     refetch();
   }
 
+  const handleTerminarPedido = () => {
+    setOpen(true);
+  }
+
+  const getTotal = () => {
+    let retorno = 0;
+    if (BuzonData.getBuzon[0]) {
+      BuzonData.getBuzon[0].detalle.forEach(item => {
+        retorno += Number(item.platillo.precio);
+      });
+    }
+    return retorno;
+  }
+
+  const handleRecorrido = () => {
+    NotificationManager.success('Exito', 'Pedido entregado con exito');
+    setOpen(false);
+    handleClose();
+  }
+
   return <Drawer anchor="right" open={open} onClose={handleClose} style={{ width: '150' }}>
-    {BuzonData && <Contenedor handleClose={handleClose} Datos={BuzonData.getBuzon[0]} handleEliminarPlatillo={handleEliminarPlatillo} />}
+    {BuzonData ? <Contenedor
+      handleClose={handleClose}
+      Datos={BuzonData.getBuzon[0]}
+      handleEliminarPlatillo={handleEliminarPlatillo}
+      handleTerminarPedido={handleTerminarPedido}
+    /> : <Cargando />}
+    {Open && <Recorido Open={Open} Datos={BuzonData.getBuzon[0]} handleClose={handleRecorrido} total={getTotal()} />}
   </Drawer>
 }
 
